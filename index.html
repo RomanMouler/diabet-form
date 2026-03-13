@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body { font-family: sans-serif; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+        input { padding: 10px; margin-bottom: 5px; border: 1px solid #ccc; border-radius: 5px; }
+        button { padding: 12px; border: none; border-radius: 5px; color: white; cursor: pointer; }
+        .ok { background: #28a745; }
+        .back { background: #dc3545; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <input type="number" id="sugar_blood" step="0.1" placeholder="Сахар (кровь)">
+    <input type="number" id="sugar_sensor" step="0.1" placeholder="Сахар (датчик)">
+    <input type="text" id="food" placeholder="Пища">
+    <input type="number" id="carbs" step="0.1" placeholder="Углеводы">
+    <input type="number" id="bolus" step="0.1" placeholder="Болюс">
+    <input type="number" id="delay" placeholder="Задержка (мин)">
+    
+    <button class="ok" onclick="sendData()">ОК</button>
+    <button class="back" onclick="tg.close()">Назад</button>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        function sendData() {
+            let data = {
+                sugar_blood: document.getElementById('sugar_blood').value,
+                sugar_sensor: document.getElementById('sugar_sensor').value,
+                food: document.getElementById('food').value,
+                carbs: document.getElementById('carbs').value,
+                bolus: document.getElementById('bolus').value,
+                delay: document.getElementById('delay').value
+            };
+            tg.sendData(JSON.stringify(data));
+            tg.close();
+        }
+    </script>
+</body>
+</html>
