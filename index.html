@@ -1,13 +1,92 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        body { font-family: sans-serif; padding: 20px; display: flex; flex-direction: column; gap: 10px; }
-        input { padding: 10px; margin-bottom: 5px; border: 1px solid #ccc; border-radius: 5px; }
-        button { padding: 12px; border: none; border-radius: 5px; color: white; cursor: pointer; }
-        .ok { background: #28a745; }
-        .back { background: #dc3545; margin-top: 5px; }
+        /* Стиль всей страницы: темный фон, текст по центру */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #1c1c1d; /* Тёмно-серый, как в iOS */
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Центрируем всё */
+            justify-content: flex-start;
+            min-height: 90vh;
+            margin: 0;
+            gap: 12px; /* Расстояние между элементами */
+        }
+
+        /* Общий стиль для всех полей ввода */
+        input {
+            width: 80%; /* Поля не на весь экран */
+            max-width: 280px; /* Максимальная ширина на больших экранах */
+            padding: 14px 16px;
+            font-size: 16px; /* Крупный текст, чтобы удобно нажимать */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px; /* Скругленные углы */
+            background-color: rgba(255, 255, 255, 0.05); /* Полупрозрачный фон */
+            color: white;
+            box-sizing: border-box; /* Чтобы padding не увеличивал ширину */
+            -webkit-appearance: none; /* Убирает стандартные стили iOS */
+        }
+
+        /* Стиль текста-подсказки внутри полей (placeholder) */
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Эффект при клике на поле */
+        input:focus {
+            outline: none;
+            border-color: #007bff; /* Синий цвет обводки */
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Контейнер для кнопок, чтобы они были шире полей */
+        .btn-container {
+            width: 90%;
+            max-width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* Общий стиль для кнопок ОК и Назад */
+        button {
+            width: 100%;
+            padding: 16px;
+            font-size: 17px;
+            font-weight: 600;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            -webkit-appearance: none;
+        }
+
+        /* Кнопка ОК — зеленая */
+        .ok {
+            background-color: #34c759; /* Красивый зеленый из iOS */
+            color: white;
+        }
+
+        .ok:active {
+            background-color: #2da14d; /* Эффект нажатия */
+        }
+
+        /* Кнопка Назад — тёмно-серая (не режет глаз) */
+        .back {
+            background-color: #3a3a3c;
+            color: #ff453a; /* Текст красный */
+        }
+
+        .back:active {
+            background-color: #2c2c2e; /* Эффект нажатия */
+        }
     </style>
 </head>
 <body>
@@ -18,13 +97,18 @@
     <input type="number" id="bolus" step="0.1" placeholder="Болюс">
     <input type="number" id="delay" placeholder="Задержка (мин)">
     
-    <button class="ok" onclick="sendData()">ОК</button>
-    <button class="back" onclick="tg.close()">Назад</button>
+    <div class="btn-container">
+        <button class="ok" onclick="sendData()">ОК</button>
+        <button class="back" onclick="tg.close()">Назад</button>
+    </div>
 
     <script>
+        // Инициализация Telegram Mini App
         let tg = window.Telegram.WebApp;
+        // Расширяем Mini App на весь экран
         tg.expand();
 
+        // Скрипт отправки данных
         function sendData() {
             let data = {
                 sugar_blood: document.getElementById('sugar_blood').value,
@@ -34,7 +118,9 @@
                 bolus: document.getElementById('bolus').value,
                 delay: document.getElementById('delay').value
             };
+            // Отправляем JSON обратно в бота
             tg.sendData(JSON.stringify(data));
+            // Закрываем Mini App
             tg.close();
         }
     </script>
