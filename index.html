@@ -82,8 +82,10 @@
         function pad(n) { return n.toString().padStart(2, '0'); }
         const now = new Date();
         document.getElementById('time').value = params.get('time') || (pad(now.getHours()) + ':' + pad(now.getMinutes()));
-        if (params.get('carbs')) {
-            document.getElementById('carbs').value = params.get('carbs');
+        for (const id of ['carbs', 'sugar_sensor', 'bolus']) {
+            if (params.get(id)) {
+                document.getElementById(id).value = params.get(id);
+            }
         }
 
         function sendData() {
