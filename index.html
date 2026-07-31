@@ -76,6 +76,7 @@
 
     <script>
         let tg = window.Telegram.WebApp;
+        tg.ready();
         tg.expand();
 
         const params = new URLSearchParams(window.location.search);
@@ -97,9 +98,13 @@
                 carbs: document.getElementById('carbs').value,
                 bolus: document.getElementById('bolus').value,
                 delay: document.getElementById('delay').value
-        };
-            tg.sendData(JSON.stringify(data));
-            tg.close();
+            };
+            try {
+                tg.sendData(JSON.stringify(data));
+                tg.close();
+            } catch (err) {
+                tg.showAlert('Ошибка sendData: ' + err.message);
+            }
         }
     </script>
 </body>
